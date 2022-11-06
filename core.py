@@ -3,7 +3,9 @@ import firebase_admin
 from firebase_admin import credentials, db
 from datetime import datetime
 import os
-import keyboard
+# TODO: Uncomment
+# import stretch_body.robot
+# from stretch_body.hello_utils import ThreadServiceExit
 
 # ---------------------------------------------------------------------------- #
 #                                    HELPERS                                   #
@@ -88,8 +90,36 @@ def pickObj(event):
 
 
 
+# ---------------------------------------------------------------------------- #
+#                                    TELEOP                                    #
+# ---------------------------------------------------------------------------- #
+
+def activateDeactivateRobot(event):
+    isTeleop = event.data
+    robot = None
+    if isTeleop:
+        # Using LLPy to actuate the robot
+        # robot = stretch_body.robot.Robot()
+        # Init robot
+        # robot.startup()
+        pass
+    else:
+        if robot != None:
+            #robot.stop()
+            robot = None
+            pass
+
+def moveGimbal(event):
+    x = event.data['x']
+    y = event.data['y']
+    # TODO @JASH Add gimbal function here
+
+def teleopManipulation(event):
+    pass
 
 
+def teleopNavigation(event):
+    pass
 
 if __name__ == "__main__":
 
@@ -100,5 +130,7 @@ if __name__ == "__main__":
     db.reference("autoSkills/navigation/selectedRoom").listen(autoNavigationCmd)
     db.reference("autoSkills/pickPlace/imgRequested").listen(autoPickPlaceGetImg)
     db.reference("autoSkills/pickPlace/tapCordinates").listen(pickObj)
+    db.reference("state/teleopMode").listen(activateDeactivateRobot)
+    db.reference("teleop/gimbal").listen(moveGimbal)
 
 
