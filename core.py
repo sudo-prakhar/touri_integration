@@ -33,6 +33,16 @@ def setAutonomousMode(value):
  # ---------------------------------------------------------------------------- #
  #                                  AUTOSKILLS                                  #
  # ---------------------------------------------------------------------------- #
+
+def faceLockUpdatePosition(event):
+    xCmd = event.data['xCmd'] if 'xCmd' in event.data else "None"
+    yCmd = event.data['yCmd'] if 'yCmd' in event.data else "None"
+
+    isFaceLock = db.reference("state/faceLock").get()
+    if xCmd != "None" and yCmd != "None":
+        if isFaceLock:
+            print(f"X: {xCmd}     Y: {yCmd}")
+
 def autoNavigationCmd(event):
     roomName = None if event.data == "None" else event.data
 
@@ -121,15 +131,20 @@ def teleopManipulation(event):
 def teleopNavigation(event):
     pass
 
+
+
+
 if __name__ == "__main__":
 
     # TODO: Update the path for firebase key
     cred = credentials.Certificate("keys/touri-65f07-firebase-adminsdk-wuv71-b245c875f8.json")
     firebase_admin.initialize_app(cred, {'databaseURL': 'https://touri-65f07-default-rtdb.firebaseio.com/'})
 
+    db.reference("autoSkills/gimbal").listen(faceLockUpdatePosition)
     db.reference("autoSkills/navigation/selectedRoom").listen(autoNavigationCmd)
     db.reference("autoSkills/pickPlace/imgRequested").listen(autoPickPlaceGetImg)
     db.reference("autoSkills/pickPlace/tapCordinates").listen(pickObj)
+
     db.reference("state/teleopMode").listen(activateDeactivateRobot)
     db.reference("teleop/gimbal").listen(moveGimbal)
 
