@@ -3,6 +3,9 @@ import firebase_admin
 from firebase_admin import credentials, db
 from datetime import datetime
 import os
+
+#SSH: hello-robot@172.26.171.22
+
 # TODO: Uncomment
 # import stretch_body.robot
 # from stretch_body.hello_utils import ThreadServiceExit
@@ -35,6 +38,10 @@ def setAutonomousMode(value):
  # ---------------------------------------------------------------------------- #
 
 def faceLockUpdatePosition(event):
+    '''
+    XCMD => LEFT NONE RIGHT
+    YCMD => UP NONE DOWN
+    '''
     xCmd = event.data['xCmd'] if 'xCmd' in event.data else "None"
     yCmd = event.data['yCmd'] if 'yCmd' in event.data else "None"
 
